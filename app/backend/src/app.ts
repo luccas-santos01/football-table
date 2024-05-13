@@ -13,6 +13,7 @@ class App {
     this.config();
 
     this.app.get('/teams', TeamsController.getAllTeams);
+    this.app.get('/teams/:id', TeamsController.getTeamById);
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
 

@@ -22,10 +22,11 @@ Teams.init({
   teamName: {
     type: DataTypes.STRING,
     allowNull: false,
+    field: 'team_name',
   },
 }, {
   sequelize: db,
-  modelName: 'trybeEval',
+  modelName: 'teams',
   timestamps: false,
 });
 

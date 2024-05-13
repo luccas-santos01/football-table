@@ -2,6 +2,7 @@ import * as express from 'express';
 import 'express-async-errors';
 
 import errorMiddleware from './middlewares/errorMiddleware';
+import TeamsController from './controller/team.controller';
 
 class App {
   public app: express.Express;
@@ -11,6 +12,7 @@ class App {
 
     this.config();
 
+    this.app.get('/teams', TeamsController.getAllTeams);
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
 

@@ -59,6 +59,7 @@
     "joi": "17.9.2",
     "jsonwebtoken": "8.5.1",
     "mysql2": "3.0.0",
-    "sequelize": "6.25.5"
+    "sequelize": "6.25.5",
+    "zod": "^3.23.8"
   }
 }

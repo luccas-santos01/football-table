@@ -3,6 +3,8 @@ import 'express-async-errors';
 
 import errorMiddleware from './middlewares/errorMiddleware';
 import TeamsController from './controller/team.controller';
+import { loginMiddleware, validateLoginMiddleware } from './middlewares/login.middleware';
+import LoginController from './controller/login.controller';
 
 class App {
   public app: express.Express;
@@ -14,6 +16,8 @@ class App {
 
     this.app.get('/teams', TeamsController.getAllTeams);
     this.app.get('/teams/:id', TeamsController.getTeamById);
+
+    this.app.post('/login', loginMiddleware, validateLoginMiddleware, LoginController.loginUser);
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
 

@@ -5,7 +5,7 @@ type User = {
   role: string;
 };
 
-const secret = process.env.JWT_SECRET;
+const secret = 'jwt_secret';
 
 if (!secret) {
   throw new Error('JWT_SECRET não está definido');

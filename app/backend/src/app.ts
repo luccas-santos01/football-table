@@ -16,6 +16,7 @@ class App {
 
     this.app.get('/teams', TeamsController.getAllTeams);
     this.app.get('/teams/:id', TeamsController.getTeamById);
+    this.app.get('/login/role', LoginController.validateToken);
 
     this.app.post('/login', loginMiddleware, validateLoginMiddleware, LoginController.loginUser);
     // Não remover essa rota

@@ -1,3 +1,5 @@
+import Matches from '../database/models/matches.model';
+import TeamStats from '../utils/teamStats';
 import Teams from '../database/models/teams.model';
 
 class TeamsService {
@@ -9,16 +11,26 @@ class TeamsService {
     return Teams.findByPk(id);
   }
 
-  static createTeam(teamName: string) {
-    return Teams.create({ teamName });
-  }
+  static async getTeamStats() {
+    const teams = await this.getAllTeams();
 
-  static updateTeam(id: number, teamName: string) {
-    return Teams.update({ teamName }, { where: { id } });
-  }
+    const teamStats = await Promise.all(teams.map(async (team) => {
+      const matchesData = await Matches.findAll({
+        where: {
+          homeTeamId: team.id,
+          inProgress: false,
+        },
+      });
 
-  static deleteTeam(id: number) {
-    return Teams.destroy({ where: { id } });
+      const stats = new TeamStats(matchesData);
+
+      return {
+        name: team.teamName,
+        ...stats,
+      };
+    }));
+
+    return teamStats;
   }
 }
 

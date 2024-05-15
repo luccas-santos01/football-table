@@ -18,6 +18,15 @@ class TeamsController {
     }
     return res.status(200).json(team);
   }
+
+  static async getTeamStats(req: Request, res: Response) {
+    try {
+      const teamStats = await TeamsService.getTeamStats();
+      return res.status(200).json(teamStats);
+    } catch (error) {
+      return res.status(500).json({ message: 'Erro ao exibir estatísticas das equipes' });
+    }
+  }
 }
 
 export default TeamsController;

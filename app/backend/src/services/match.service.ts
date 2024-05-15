@@ -18,6 +18,26 @@ class ShowMatchesService {
       ],
     });
   }
+
+  static getMatchesInProgress(inProgress: string) {
+    return Matches.findAll({
+      where: {
+        inProgress: inProgress === 'true',
+      },
+      include: [
+        {
+          model: Teams,
+          as: 'homeTeam',
+          attributes: ['teamName'],
+        },
+        {
+          model: Teams,
+          as: 'awayTeam',
+          attributes: ['teamName'],
+        },
+      ],
+    });
+  }
 }
 
 export default ShowMatchesService;

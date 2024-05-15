@@ -18,7 +18,14 @@ class App {
     this.app.get('/teams', TeamsController.getAllTeams);
     this.app.get('/teams/:id', TeamsController.getTeamById);
     this.app.get('/login/role', LoginController.validateToken);
-    this.app.get('/matches', MatchesController.getAllMatches);
+    this.app.get('/matches', (req, res) => {
+      const { inProgress } = req.query;
+      if (inProgress) {
+        MatchesController.getMatchesInProgress(req, res);
+      } else {
+        MatchesController.getAllMatches(req, res);
+      }
+    });
 
     this.app.post('/login', loginMiddleware, validateLoginMiddleware, LoginController.loginUser);
     // Não remover essa rota

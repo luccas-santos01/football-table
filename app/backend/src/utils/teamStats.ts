@@ -10,6 +10,29 @@ interface MatchData {
   awayTeamGoals: number;
 }
 
+function calculateTeamOutcome(teamGoals: number, opponentGoals: number): Match {
+  let points: number;
+  let result: 'win' | 'draw' | 'loss';
+
+  if (teamGoals > opponentGoals) {
+    points = 3;
+    result = 'win';
+  } else if (teamGoals === opponentGoals) {
+    points = 1;
+    result = 'draw';
+  } else {
+    points = 0;
+    result = 'loss';
+  }
+
+  return {
+    points,
+    result,
+    goalsFavor: teamGoals,
+    goalsOwn: opponentGoals,
+  };
+}
+
 export type TeamStat = {
   totalPoints: number;
   totalGames: number;
@@ -23,27 +46,15 @@ export type TeamStat = {
   name: string;
 };
 
-function calculateMatchOutcome(homeTeamGoals: number, awayTeamGoals: number): Match {
-  let points: number;
-  let result: 'win' | 'draw' | 'loss';
-
-  if (homeTeamGoals > awayTeamGoals) {
-    points = 3;
-    result = 'win';
-  } else if (homeTeamGoals === awayTeamGoals) {
-    points = 1;
-    result = 'draw';
-  } else {
-    points = 0;
-    result = 'loss';
+function calculateMatchOutcome(
+  homeTeamGoals: number,
+  awayTeamGoals: number,
+  teamKey: 'homeTeamId' | 'awayTeamId',
+): Match {
+  if (teamKey === 'homeTeamId') {
+    return calculateTeamOutcome(homeTeamGoals, awayTeamGoals);
   }
-
-  return {
-    points,
-    result,
-    goalsFavor: homeTeamGoals,
-    goalsOwn: awayTeamGoals,
-  };
+  return calculateTeamOutcome(awayTeamGoals, homeTeamGoals);
 }
 
 export default class TeamStats {
@@ -58,9 +69,9 @@ export default class TeamStats {
   efficiency: string;
   name: string;
 
-  constructor(matchesData: MatchData[], teamName: string) {
+  constructor(matchesData: MatchData[], teamName: string, teamKey: 'homeTeamId' | 'awayTeamId') {
     const matches: Match[] = matchesData.map((matchData) =>
-      calculateMatchOutcome(matchData.homeTeamGoals, matchData.awayTeamGoals));
+      calculateMatchOutcome(matchData.homeTeamGoals, matchData.awayTeamGoals, teamKey));
     this.name = teamName;
     this.totalPoints = matches.reduce((sum, match) => sum + match.points, 0);
     this.totalGames = matches.length;

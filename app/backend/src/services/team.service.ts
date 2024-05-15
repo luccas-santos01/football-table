@@ -11,7 +11,7 @@ class TeamsService {
     return Teams.findByPk(id);
   }
 
-  static async getTeamStats() {
+  static async getHomeTeamStats() {
     const teams = await this.getAllTeams();
 
     let teamStats: TeamStat[] = await Promise.all(teams.map(async (team) => {
@@ -22,7 +22,30 @@ class TeamsService {
         },
       });
 
-      const stats = new TeamStats(matchesData, team.teamName);
+      const stats = new TeamStats(matchesData, team.teamName, 'homeTeamId');
+
+      return {
+        ...stats,
+      };
+    }));
+
+    teamStats = sortTeamStats(teamStats);
+
+    return teamStats;
+  }
+
+  static async getAwayTeamStats() {
+    const teams = await this.getAllTeams();
+
+    let teamStats: TeamStat[] = await Promise.all(teams.map(async (team) => {
+      const matchesData = await Matches.findAll({
+        where: {
+          awayTeamId: team.id,
+          inProgress: false,
+        },
+      });
+
+      const stats = new TeamStats(matchesData, team.teamName, 'awayTeamId');
 
       return {
         ...stats,

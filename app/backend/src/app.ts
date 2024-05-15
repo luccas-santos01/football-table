@@ -39,7 +39,8 @@ class App {
     this.app.get('/teams', TeamsController.getAllTeams);
     this.app.get('/teams/:id', TeamsController.getTeamById);
     this.app.get('/login/role', LoginController.validateToken);
-    this.app.get('/leaderboard/home', TeamsController.getTeamStats);
+    this.app.get('/leaderboard/home', TeamsController.getHomeTeamStats);
+    this.app.get('/leaderboard/away', TeamsController.getAwayTeamStats);
     this.app.get('/matches', (req, res) => {
       const { inProgress } = req.query;
       if (inProgress) {

@@ -19,9 +19,18 @@ class TeamsController {
     return res.status(200).json(team);
   }
 
-  static async getTeamStats(req: Request, res: Response) {
+  static async getHomeTeamStats(req: Request, res: Response) {
     try {
-      const teamStats = await TeamsService.getTeamStats();
+      const teamStats = await TeamsService.getHomeTeamStats();
+      return res.status(200).json(teamStats);
+    } catch (error) {
+      return res.status(500).json({ message: 'Erro ao exibir estatísticas das equipes' });
+    }
+  }
+
+  static async getAwayTeamStats(req: Request, res: Response) {
+    try {
+      const teamStats = await TeamsService.getAwayTeamStats();
       return res.status(200).json(teamStats);
     } catch (error) {
       return res.status(500).json({ message: 'Erro ao exibir estatísticas das equipes' });

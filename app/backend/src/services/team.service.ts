@@ -1,5 +1,5 @@
 import Matches from '../database/models/matches.model';
-import TeamStats from '../utils/teamStats';
+import TeamStats, { sortTeamStats, TeamStat } from '../utils/teamStats';
 import Teams from '../database/models/teams.model';
 
 class TeamsService {
@@ -14,7 +14,7 @@ class TeamsService {
   static async getTeamStats() {
     const teams = await this.getAllTeams();
 
-    const teamStats = await Promise.all(teams.map(async (team) => {
+    let teamStats: TeamStat[] = await Promise.all(teams.map(async (team) => {
       const matchesData = await Matches.findAll({
         where: {
           homeTeamId: team.id,
@@ -22,13 +22,14 @@ class TeamsService {
         },
       });
 
-      const stats = new TeamStats(matchesData);
+      const stats = new TeamStats(matchesData, team.teamName);
 
       return {
-        name: team.teamName,
         ...stats,
       };
     }));
+
+    teamStats = sortTeamStats(teamStats);
 
     return teamStats;
   }

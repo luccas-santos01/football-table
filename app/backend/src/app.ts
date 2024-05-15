@@ -41,7 +41,7 @@ class App {
     this.app.get('/login/role', LoginController.validateToken);
     this.app.get('/leaderboard/home', TeamsController.getHomeTeamStats);
     this.app.get('/leaderboard/away', TeamsController.getAwayTeamStats);
-    this.app.get('/leaderboard/', TeamsController.getTotalTeamStats);
+    this.app.get('/leaderboard', TeamsController.getTotalTeamStats);
     this.app.get('/matches', MatchesController.handleMatchesRequest);
     this.app.patch('/matches/:id', validateToken, MatchesController.updateMatch);
     this.app.patch('/matches/:id/finish', validateToken, MatchesController.finishMatch);

@@ -56,6 +56,56 @@ class TeamsService {
 
     return teamStats;
   }
+
+  static calculateEfficiency(totalGames: number, totalPoints: number): string {
+    return ((totalPoints / (totalGames * 3)) * 100).toFixed(2);
+  }
+
+  static async getTotalTeamStats(): Promise<TeamStat[]> {
+    return sortTeamStats(this.combineTeamStats(
+      await this.getHomeTeamStats(),
+      await this.getAwayTeamStats(),
+    ));
+  }
+
+  static combineTeamStats(homeTeamStats: TeamStat[], awayTeamStats: TeamStat[]): TeamStat[] {
+    const teamMap = new Map<string, TeamStat>();
+
+    const addStats = (team: TeamStat) => {
+      const combined = teamMap.get(team.name) || this.initializeTeam(team.name);
+      combined.totalPoints += team.totalPoints;
+      combined.totalGames += team.totalGames;
+      combined.totalVictories += team.totalVictories;
+      combined.totalDraws += team.totalDraws;
+      combined.totalLosses += team.totalLosses;
+      combined.goalsFavor += team.goalsFavor;
+      combined.goalsOwn += team.goalsOwn;
+      combined.goalsBalance += team.goalsBalance;
+      teamMap.set(team.name, combined);
+    };
+
+    [...homeTeamStats, ...awayTeamStats].forEach(addStats);
+
+    return Array.from(teamMap.values()).map((team) => ({
+      ...team,
+      efficiency: this.calculateEfficiency(team.totalGames, team.totalPoints),
+    }));
+  }
+
+  static initializeTeam(name: string): TeamStat {
+    return {
+      name,
+      totalPoints: 0,
+      totalGames: 0,
+      totalVictories: 0,
+      totalDraws: 0,
+      totalLosses: 0,
+      goalsFavor: 0,
+      goalsOwn: 0,
+      goalsBalance: 0,
+      efficiency: '0.00',
+    };
+  }
 }
 
 export default TeamsService;

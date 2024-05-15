@@ -41,21 +41,12 @@ class App {
     this.app.get('/login/role', LoginController.validateToken);
     this.app.get('/leaderboard/home', TeamsController.getHomeTeamStats);
     this.app.get('/leaderboard/away', TeamsController.getAwayTeamStats);
-    this.app.get('/matches', (req, res) => {
-      const { inProgress } = req.query;
-      if (inProgress) {
-        MatchesController.getMatchesInProgress(req, res);
-      } else {
-        MatchesController.getAllMatches(req, res);
-      }
-    });
-
+    this.app.get('/leaderboard/', TeamsController.getTotalTeamStats);
+    this.app.get('/matches', MatchesController.handleMatchesRequest);
     this.app.patch('/matches/:id', validateToken, MatchesController.updateMatch);
     this.app.patch('/matches/:id/finish', validateToken, MatchesController.finishMatch);
-
     this.app.post('/login', loginMiddleware, validateLoginMiddleware, LoginController.loginUser);
     this.app.post('/matches', validateToken, validateMatchTeams, MatchesController.createMatch);
-    // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
   }
 

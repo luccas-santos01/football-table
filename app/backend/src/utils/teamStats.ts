@@ -1,4 +1,4 @@
-interface Match {
+export interface Match {
   points: number;
   result: 'win' | 'draw' | 'loss';
   goalsFavor: number;

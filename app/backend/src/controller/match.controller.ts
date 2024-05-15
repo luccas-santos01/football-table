@@ -56,6 +56,15 @@ class MatchesController {
       return res.status(500).json({ message: 'Erro ao criar partida' });
     }
   }
+
+  static handleMatchesRequest(req: Request, res: Response) {
+    const { inProgress } = req.query;
+    if (inProgress) {
+      MatchesController.getMatchesInProgress(req, res);
+    } else {
+      MatchesController.getAllMatches(req, res);
+    }
+  }
 }
 
 export default MatchesController;

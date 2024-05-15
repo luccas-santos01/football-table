@@ -24,7 +24,8 @@ class TeamsController {
       const teamStats = await TeamsService.getHomeTeamStats();
       return res.status(200).json(teamStats);
     } catch (error) {
-      return res.status(500).json({ message: 'Erro ao exibir estatísticas das equipes' });
+      return res.status(500)
+        .json({ message: 'Erro ao exibir estatísticas das equipes mandantes' });
     }
   }
 
@@ -33,7 +34,18 @@ class TeamsController {
       const teamStats = await TeamsService.getAwayTeamStats();
       return res.status(200).json(teamStats);
     } catch (error) {
-      return res.status(500).json({ message: 'Erro ao exibir estatísticas das equipes' });
+      return res.status(500)
+        .json({ message: 'Erro ao exibir estatísticas das equipes visitantes' });
+    }
+  }
+
+  static async getTotalTeamStats(req: Request, res: Response) {
+    try {
+      const teamStats = await TeamsService.getTotalTeamStats();
+      return res.status(200).json(teamStats);
+    } catch (error) {
+      return res.status(500)
+        .json({ message: 'Erro ao exibir estatísticas das equipes' });
     }
   }
 }

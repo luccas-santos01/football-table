@@ -69,6 +69,25 @@ class MatchesService {
 
     return { message: 'Partida atualizada' };
   }
+
+  static async createMatch(
+    homeTeamId: number,
+    awayTeamId: number,
+    homeTeamGoals: number,
+    awayTeamGoals: number,
+  ) {
+    const match = new Matches({
+      homeTeamId,
+      awayTeamId,
+      homeTeamGoals,
+      awayTeamGoals,
+      inProgress: true,
+    });
+
+    await match.save();
+
+    return match;
+  }
 }
 
 export default MatchesService;

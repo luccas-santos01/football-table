@@ -51,6 +51,29 @@ class MatchesController {
       return res.status(500).json({ message: 'Erro ao atualizar partida' });
     }
   }
+
+  static async createMatch(req: Request, res: Response) {
+    const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
+    const token = req.headers.authorization;
+
+    if (!token) {
+      return res.status(401).json({ message: 'Token não fornecido.' });
+    }
+
+    try {
+      await TokenService.validateToken(token);
+    } catch (error) {
+      return res.status(401).json({ message: 'Token inválido.' });
+    }
+
+    try {
+      const match = await MatchesService
+        .createMatch(homeTeam, awayTeam, homeTeamGoals, awayTeamGoals);
+      return res.status(200).json(match);
+    } catch (error) {
+      return res.status(500).json({ message: 'Erro ao criar partida' });
+    }
+  }
 }
 
 export default MatchesController;

@@ -14,25 +14,7 @@ class App {
     this.app = express();
 
     this.config();
-
-    this.app.get('/teams', TeamsController.getAllTeams);
-    this.app.get('/teams/:id', TeamsController.getTeamById);
-    this.app.get('/login/role', LoginController.validateToken);
-    this.app.get('/matches', (req, res) => {
-      const { inProgress } = req.query;
-      if (inProgress) {
-        MatchesController.getMatchesInProgress(req, res);
-      } else {
-        MatchesController.getAllMatches(req, res);
-      }
-    });
-
-    this.app.patch('/matches/:id/finish', MatchesController.finishMatch);
-    this.app.patch('/matches/:id', MatchesController.updateMatch);
-
-    this.app.post('/login', loginMiddleware, validateLoginMiddleware, LoginController.loginUser);
-    // Não remover essa rota
-    this.app.get('/', (req, res) => res.json({ ok: true }));
+    this.routes();
 
     // Não remova esse middleware de erro, mas fique a vontade para customizá-lo
     // Mantenha ele sempre como o último middleware a ser chamado
@@ -49,6 +31,28 @@ class App {
 
     this.app.use(express.json());
     this.app.use(accessControl);
+  }
+
+  private routes(): void {
+    this.app.get('/teams', TeamsController.getAllTeams);
+    this.app.get('/teams/:id', TeamsController.getTeamById);
+    this.app.get('/login/role', LoginController.validateToken);
+    this.app.get('/matches', (req, res) => {
+      const { inProgress } = req.query;
+      if (inProgress) {
+        MatchesController.getMatchesInProgress(req, res);
+      } else {
+        MatchesController.getAllMatches(req, res);
+      }
+    });
+
+    this.app.patch('/matches/:id/finish', MatchesController.finishMatch);
+    this.app.patch('/matches/:id', MatchesController.updateMatch);
+
+    this.app.post('/login', loginMiddleware, validateLoginMiddleware, LoginController.loginUser);
+    this.app.post('/matches', MatchesController.createMatch);
+    // Não remover essa rota
+    this.app.get('/', (req, res) => res.json({ ok: true }));
   }
 
   public start(PORT: string | number): void {

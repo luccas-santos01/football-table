@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import TokenService from '../services/token.service';
 import MatchesService from '../services/match.service';
 
 class MatchesController {
@@ -37,17 +36,6 @@ class MatchesController {
   static async updateMatch(req: Request, res: Response) {
     const { id } = req.params;
     const { homeTeamGoals, awayTeamGoals } = req.body;
-    const token = req.headers.authorization;
-
-    if (!token) {
-      return res.status(401).json({ message: 'Token não fornecido.' });
-    }
-
-    try {
-      await TokenService.validateToken(token);
-    } catch (error) {
-      return res.status(401).json({ message: 'Token inválido.' });
-    }
 
     try {
       const match = await MatchesService.updateMatch(id, homeTeamGoals, awayTeamGoals);
@@ -58,23 +46,12 @@ class MatchesController {
   }
 
   static async createMatch(req: Request, res: Response) {
-    const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
-    const token = req.headers.authorization;
-
-    if (!token) {
-      return res.status(401).json({ message: 'Token não fornecido.' });
-    }
-
-    try {
-      await TokenService.validateToken(token);
-    } catch (error) {
-      return res.status(401).json({ message: 'Token inválido.' });
-    }
+    const { homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals } = req.body;
 
     try {
       const match = await MatchesService
-        .createMatch(homeTeam, awayTeam, homeTeamGoals, awayTeamGoals);
-      return res.status(200).json(match);
+        .createMatch(homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals);
+      return res.status(201).json(match);
     } catch (error) {
       return res.status(500).json({ message: 'Erro ao criar partida' });
     }

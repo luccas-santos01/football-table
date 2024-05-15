@@ -48,11 +48,11 @@ class App {
       }
     });
 
-    this.app.patch('/matches/:id', MatchesController.updateMatch);
+    this.app.patch('/matches/:id', validateToken, MatchesController.updateMatch);
     this.app.patch('/matches/:id/finish', validateToken, MatchesController.finishMatch);
 
     this.app.post('/login', loginMiddleware, validateLoginMiddleware, LoginController.loginUser);
-    this.app.post('/matches', validateMatchTeams, MatchesController.createMatch);
+    this.app.post('/matches', validateToken, validateMatchTeams, MatchesController.createMatch);
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
   }

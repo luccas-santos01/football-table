@@ -22,11 +22,16 @@ class MatchesController {
 
   static async finishMatch(req: Request, res: Response) {
     const { id } = req.params;
-    const match = await MatchesService.finishMatch(id);
-    if (!match) {
+
+    try {
+      const match = await MatchesService.finishMatch(id);
+      if (!match) {
+        return res.status(500).json({ message: 'Erro ao finalizar partida' });
+      }
+      return res.status(200).json(match);
+    } catch (error) {
       return res.status(500).json({ message: 'Erro ao finalizar partida' });
     }
-    return res.status(200).json(match);
   }
 
   static async updateMatch(req: Request, res: Response) {

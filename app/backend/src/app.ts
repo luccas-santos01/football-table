@@ -7,6 +7,7 @@ import { loginMiddleware, validateLoginMiddleware } from './middlewares/login.mi
 import LoginController from './controller/login.controller';
 import MatchesController from './controller/match.controller';
 import validateMatchTeams from './middlewares/match.middleware';
+import validateToken from './middlewares/validateToken.middleware';
 
 class App {
   public app: express.Express;
@@ -47,8 +48,8 @@ class App {
       }
     });
 
-    this.app.patch('/matches/:id/finish', MatchesController.finishMatch);
     this.app.patch('/matches/:id', MatchesController.updateMatch);
+    this.app.patch('/matches/:id/finish', validateToken, MatchesController.finishMatch);
 
     this.app.post('/login', loginMiddleware, validateLoginMiddleware, LoginController.loginUser);
     this.app.post('/matches', validateMatchTeams, MatchesController.createMatch);

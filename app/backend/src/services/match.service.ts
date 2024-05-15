@@ -1,7 +1,7 @@
 import Matches from '../database/models/matches.model';
 import Teams from '../database/models/teams.model';
 
-class ShowMatchesService {
+class MatchesService {
   static getAllMatches() {
     return Matches.findAll({
       include: [
@@ -38,6 +38,19 @@ class ShowMatchesService {
       ],
     });
   }
+
+  static async finishMatch(id: string) {
+    const match = await Matches.findOne({ where: { id } });
+
+    if (!match) {
+      throw new Error('Match not found');
+    }
+
+    match.inProgress = false;
+    await match.save();
+
+    return { message: 'Finished' };
+  }
 }
 
-export default ShowMatchesService;
+export default MatchesService;

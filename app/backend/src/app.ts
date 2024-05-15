@@ -27,6 +27,8 @@ class App {
       }
     });
 
+    this.app.patch('/matches/:id/finish', MatchesController.finishMatch);
+
     this.app.post('/login', loginMiddleware, validateLoginMiddleware, LoginController.loginUser);
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));

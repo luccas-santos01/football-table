@@ -5,6 +5,7 @@ import errorMiddleware from './middlewares/errorMiddleware';
 import TeamsController from './controller/team.controller';
 import { loginMiddleware, validateLoginMiddleware } from './middlewares/login.middleware';
 import LoginController from './controller/login.controller';
+import MatchesController from './controller/match.controller';
 
 class App {
   public app: express.Express;
@@ -17,6 +18,7 @@ class App {
     this.app.get('/teams', TeamsController.getAllTeams);
     this.app.get('/teams/:id', TeamsController.getTeamById);
     this.app.get('/login/role', LoginController.validateToken);
+    this.app.get('/matches', MatchesController.getAllMatches);
 
     this.app.post('/login', loginMiddleware, validateLoginMiddleware, LoginController.loginUser);
     // Não remover essa rota

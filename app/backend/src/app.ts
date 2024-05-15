@@ -6,6 +6,7 @@ import TeamsController from './controller/team.controller';
 import { loginMiddleware, validateLoginMiddleware } from './middlewares/login.middleware';
 import LoginController from './controller/login.controller';
 import MatchesController from './controller/match.controller';
+import validateMatchTeams from './middlewares/match.middleware';
 
 class App {
   public app: express.Express;
@@ -50,7 +51,7 @@ class App {
     this.app.patch('/matches/:id', MatchesController.updateMatch);
 
     this.app.post('/login', loginMiddleware, validateLoginMiddleware, LoginController.loginUser);
-    this.app.post('/matches', MatchesController.createMatch);
+    this.app.post('/matches', validateMatchTeams, MatchesController.createMatch);
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
   }

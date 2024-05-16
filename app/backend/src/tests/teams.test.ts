@@ -61,17 +61,18 @@ describe('Testes para o endpoint de equipes', () => {
   it('Deve retornar estatísticas totais da equipe', async () => {
     return chai.request(app)
       .get('/leaderboard')
-      .set('Authorization', `Bearer ${token}`)
+      .set('Authorization', `Token ${token}`)
       .then((res) => {
         expect(res).to.have.status(200);
         expect(res.body).to.be.an('array');
       });
   });
 });
+
 function getAuthToken(): string {
   const payload = {
-    email: 'teste',
-    role: 'teste' //
+    id: 1,
+    role: 'admin'
   };
 
   const secret = 'jwt_secret';
@@ -80,4 +81,3 @@ function getAuthToken(): string {
 
   return token;
 }
-

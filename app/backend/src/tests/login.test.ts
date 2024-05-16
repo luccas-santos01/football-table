@@ -23,6 +23,20 @@ describe('Testes para o endpoint login', () => {
       });
   });
 
-  it('', async () => {
+  it('Deve retornar um erro 400 quando o email estiver vazio', async () => {
+    return chai.request(app)
+      .post('/login')
+      .send({ email: '', password: 'secret_user' })
+      .then((res: Response) => {
+        expect(res).to.have.status(400);
+      });
+  });
+  it('Deve retornar um erro 400 quando a senha estiver vazia', async () => {
+    return chai.request(app)
+      .post('/login')
+      .send({ email: 'user@user.com', password: '' })
+      .then((res: Response) => {
+        expect(res).to.have.status(400);
+      });
   });
 });

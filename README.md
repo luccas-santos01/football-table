@@ -2,7 +2,7 @@
 
 ## Introdução
 
-Bem-vindo ao Football Table, um site informativo sobre partidas e classificações de futebol! ⚽️ Este projeto foi desenvolvido com o objetivo de proporcionar uma plataforma onde os usuários possam acompanhar as últimas partidas e verificar as classificações dos times de futebol.
+O Football Table é um site que simula eventos fictícios de partidas e classificações de futebol. Ele oferece aos usuários uma plataforma para explorar e interagir com dados simulados de jogos e posições dos times.
 
 ## Estrutura do Projeto
 

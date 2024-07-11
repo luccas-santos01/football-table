@@ -2,7 +2,7 @@
 
 ## Introdução
 
-O Football Table é um site que simula eventos fictícios de partidas e classificações de futebol. Ele oferece aos usuários uma plataforma para explorar e interagir com dados simulados de jogos e posições dos times.
+O Football Table é uma aplicação que simula eventos fictícios de partidas e classificações de futebol. Ele oferece aos usuários uma plataforma para explorar e interagir com dados simulados de jogos e posições dos times.
 
 ## Estrutura do Projeto
 
